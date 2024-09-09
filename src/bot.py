@@ -2,37 +2,33 @@ from atproto import Client
 
 class Bot:
     def __init__(self) -> None:
-        self.handler = None
-        self.password = None
-    
-    def connect(self, handler: str, password: str):
-        self.handler = handler
-        self.password = password
+        pass
 
 class BlueskyBot(Bot):
     def __init__(self) -> None:
-        self.client = Client()
-        self.profile = None
+        super().__init__()
+        self.__client = Client()
+        self.__profile = None
 
-    def connect(self, handler: str, password: str):
-        self.client.login(handler, password)
-        return super().connect(handler, password)
-    
-    def post(self, message) -> None:
+    def connect(self, handler: str, password: str) -> bool:
         try:
-            post = self.client.send_post(message)
-            post.cid
-            print(f"Posted: {message}")
-            return
+            self.__profile = self.__client.login(handler, password)
+            print(f"Welcome, {self.__profile.display_name}")
+            return True
         except Exception as e:
-            print(f"Error: {e}")
-            return
-    
+            print(f"Connection error: {e}")
+            return False
+
+    def post(self, message: str) -> None:
+        try:
+            post = self.__client.send_post(message)
+            print(f"Posted: ({post.cid}) {message}")
+        except Exception as e:
+            print(f"Error posting message: {e}")
+
     def like(self, uri: str, cid: str) -> None:
         try:
-            self.client.like(uri, cid)
+            self.__client.like(uri, cid)
             print(f"Liked: {uri}")
-            return
         except Exception as e:
-            print(f"Error: {e}")
-            return
+            print(f"Error liking post: {e}")

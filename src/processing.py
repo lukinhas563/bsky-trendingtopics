@@ -12,7 +12,7 @@ class ProcessPostText:
         Pré-processa o texto removendo pontuações e convertendo para minúsculas.
         """
 
-        text = re.sub(r'[^\w\s#]', '', text)
+        text = re.sub(r'[^\w\s#]|[\d]', '', text)
         text = text.lower()
         return text
     
@@ -24,7 +24,6 @@ class ProcessPostText:
         words = self.__preprocess_text(text).split()
         filtered_words = [word for word in words if word not in self.__stop_words]
     
-        # Atualizar contadores
         self.__word_counter.update(filtered_words)
     
     def get_result(self) -> Counter:

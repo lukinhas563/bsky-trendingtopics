@@ -29,16 +29,20 @@ class FirehoseClient:
                         if block['$type'] == 'app.bsky.feed.post':
                             if block.get('langs') and block['langs'][0] == 'pt':
                                 if block.get('text'):
-                                    print(block.get('text'))
                                     self.__processing.process_post_text(block.get('text'))
 
             except Exception as e:
                 print(f"Error processing the block {cid}: {e}")
+        
+        if self.__message_count % 1000 == 0:
+            print(f"Processed {self.__message_count} messages")
 
         # Increment message count and stop if limit is reached
         self.__message_count += 1
         if self.__message_count >= self.__limit:
+            print("Finishing process...")
             await self.__client.stop()
+            self.__message_count = 0
 
     async def start(self, limit=1000) -> None:
         self.__limit = limit
