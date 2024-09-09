@@ -68,10 +68,11 @@ stop_words = {
     "querendo", "dizer", "cima", "nenhum", "dando", "deixa", "horas", "postar", "rede", "ficou",
     "chega", "imagina", "enquanto", "paulo", "trabalhar", "faço", "sério", "começar", "sonho",
     "prova", "dormir", "parar", "viver", "nenhuma", "tanta", "literalmente", "pegar", "gif",
+    "cmg", "fumo", "dois", "cinco", "um", "tres", "nois", "pessoal", "entao", "porn",
     
     # Interjeições e palavras irrelevantes
     "ai", "ops", "ufa", "eh", "oh", "hã", "poxa", "xi", "uau", "glub", "k", "kk", 
     "kkk", "blo", "yay", "whoa", "ouch", "wow", "meh", "hey", "hmm", "lol", "lmao",
     "pqp", "aju", "ha", "ja", "huh", "ownn", "aff", "affs", "aka", "shua", "ka", "kkkk",
-    "kkkkk", "kkkkkk", "haha", "hahaha", "kakaka", "kkkkkkk", "kkkkkkkk",
+    "kkkkk", "kkkkkk", "haha", "hahaha", "kakaka", "kkkkkkk", "kkkkkkkk", "uh"
 }

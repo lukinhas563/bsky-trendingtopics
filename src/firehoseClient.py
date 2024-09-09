@@ -1,16 +1,15 @@
-import asyncio
-from atproto import AsyncFirehoseSubscribeReposClient, parse_subscribe_repos_message, models, CAR
+from atproto import FirehoseSubscribeReposClient, parse_subscribe_repos_message, models, CAR
 from collections import Counter
 from processing import ProcessPostText
 
 class FirehoseClient:
     def __init__(self, processing: ProcessPostText) -> None:
         self.__processing = processing
-        self.__client = AsyncFirehoseSubscribeReposClient()
+        self.__client = FirehoseSubscribeReposClient()
         self.__message_count = 0
         self.__limit = 1000
 
-    async def __on_message_handler(self, message) -> None:
+    def __on_message_handler(self, message) -> None:
         commit = parse_subscribe_repos_message(message)
 
         if not isinstance(commit, models.ComAtprotoSyncSubscribeRepos.Commit):
@@ -41,13 +40,13 @@ class FirehoseClient:
         self.__message_count += 1
         if self.__message_count >= self.__limit:
             print("Finishing process...")
-            await self.__client.stop()
+            self.__client.stop()
             self.__message_count = 0
 
-    async def start(self, limit=1000) -> None:
+    def start(self, limit=1000) -> None:
         self.__limit = limit
-        # Start the client with the asynchronous callback
-        await self.__client.start(self.__on_message_handler)
+        # Start the client
+        self.__client.start(self.__on_message_handler)
     
     def get_result(self) -> Counter:
         return self.__processing.get_result()
