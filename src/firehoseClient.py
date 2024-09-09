@@ -41,7 +41,6 @@ class FirehoseClient:
         if self.__message_count >= self.__limit:
             print("Finishing process...")
             self.__client.stop()
-            self.__message_count = 0
 
     def start(self, limit=1000) -> None:
         self.__limit = limit
@@ -50,3 +49,9 @@ class FirehoseClient:
     
     def get_result(self) -> Counter:
         return self.__processing.get_result()
+    
+    def reset(self) -> None:
+        self.__processing.reset_counter()
+        self.__message_count = 0
+
+

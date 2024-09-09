@@ -28,3 +28,10 @@ class ProcessPostText:
     
     def get_result(self) -> Counter:
         return self.__word_counter
+    
+    def reset_counter(self) -> None:
+        """
+        Reseta o contador de palavras para começar o processamento do zero.
+        """
+        
+        self.__word_counter.clear()

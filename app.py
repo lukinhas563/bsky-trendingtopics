@@ -13,6 +13,7 @@ from functools import partial
 import webserver
 
 def trending_topics(firehose: FirehoseClient, bot: BlueskyBot, limit=1000):
+    firehose.reset()
     firehose.start(limit)
 
     result = firehose.get_result()
