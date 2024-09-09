@@ -41,10 +41,11 @@ stop_words = {
     "odeio", "ontem", "hot", "vez", "nice", "boa", "dia", "noite", "tarde", "show",
     "homem", "alguém", "jogo", "tempo", "domingo", "segunda", "terça", "quarta",
     "quinta", "sexta", "sabado", "segunda-feira", "terça-feira", "quarta-feira",
-    "quinta-feira", "sexta-feira", "semana",
+    "quinta-feira", "sexta-feira", "semana", "oi", "dar", "merda", "fuder", "fude",
+    "viu", "tive",
     
     # Interjeições e palavras irrelevantes
     "ai", "ops", "ufa", "eh", "oh", "hã", "poxa", "xi", "uau", "glub", "k", "kk", 
     "kkk", "blo", "yay", "whoa", "ouch", "wow", "meh", "hey", "hmm", "lol", "lmao",
-    "pqp", "aju", "ha", "ja"
+    "pqp", "aju", "ha", "ja", "huh", "ownn"
 }
