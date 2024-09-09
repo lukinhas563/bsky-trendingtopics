@@ -50,7 +50,7 @@ def main():
     print("Starting...")
 
     # Agendando para rodar a cada 14 minutos
-    schedule.every(14).minutes.do(partial(trending_topics, firehose, bot, limit=500000))
+    schedule.every(1).hours.do(partial(trending_topics, firehose, bot, limit=100000))
 
     while True:
         schedule.run_pending()

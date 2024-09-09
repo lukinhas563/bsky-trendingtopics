@@ -21,7 +21,7 @@ class BlueskyBot(Bot):
 
     def post(self, message: str) -> None:
         try:
-            post = self.__client.send_post(message)
+            #post = self.__client.send_post(message)
             print(f"Posted: {message}")
         except Exception as e:
             print(f"Error posting message: {e}")
