@@ -18,7 +18,7 @@ stop_words = {
     "essa", "aquela", "estes", "esses", "aqueles", "estas", "essas", "aquelas", 
     "que", "quem", "onde", "qual", "quando", "quanto", "como", "porque", "porquê", 
     "qualquer", "algum", "alguma", "alguns", "algumas", "você", "nossa", "nosso",
-    "our", "mine", "he", "she", "it", "his", "her", "you", "your", "vocês",
+    "our", "mine", "he", "she", "it", "his", "her", "you", "your", "vocês", "my",
 
     # Verbos auxiliares e comuns
     "é", "foi", "era", "será", "são", "sou", "está", "estava", "estará", "estão", 
@@ -68,8 +68,10 @@ stop_words = {
     "querendo", "dizer", "cima", "nenhum", "dando", "deixa", "horas", "postar", "rede", "ficou",
     "chega", "imagina", "enquanto", "paulo", "trabalhar", "faço", "sério", "começar", "sonho",
     "prova", "dormir", "parar", "viver", "nenhuma", "tanta", "literalmente", "pegar", "gif",
-    "cmg", "fumo", "dois", "cinco", "um", "tres", "nois", "pessoal", "entao", "porn", "amanhã",
-    "min",
+    "cmg", "fumo", "dois", "cinco", "um", "tres", "nois", "pessoal", "entao", "porn", "pfv",
+    "tomo", "fazem", "numa", "entrar", "estamos", "#", "acha", "à", "pedir", "demissão", "errado",
+    "vídeos", "chata", "possível", "video", "certeza", "forma", "quiser", "vejo", "aq", "veio",
+    "sabia", "vei", "ouvir", "pensar", "post",
     
     # Interjeições e palavras irrelevantes
     "ai", "ops", "ufa", "eh", "oh", "hã", "poxa", "xi", "uau", "glub", "k", "kk", 
