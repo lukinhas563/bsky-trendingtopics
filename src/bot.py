@@ -1,4 +1,4 @@
-from atproto import Client
+from atproto import AsyncClient
 
 class Bot:
     def __init__(self) -> None:
@@ -7,12 +7,12 @@ class Bot:
 class BlueskyBot(Bot):
     def __init__(self) -> None:
         super().__init__()
-        self.__client = Client()
+        self.__client = AsyncClient()
         self.__profile = None
 
-    def connect(self, handler: str, password: str) -> bool:
+    async def connect(self, handler: str, password: str) -> bool:
         try:
-            self.__profile = self.__client.login(handler, password)
+            self.__profile = await self.__client.login(handler, password)
             print(f"Welcome, {self.__profile.display_name}")
             return True
         except Exception as e:
@@ -21,14 +21,14 @@ class BlueskyBot(Bot):
 
     def post(self, message: str) -> None:
         try:
-            post = self.__client.send_post(message)
+            #post = self.__client.send_post(message)
             print(f"Posted: {message}")
         except Exception as e:
             print(f"Error posting message: {e}")
 
-    def like(self, uri: str, cid: str) -> None:
+    async def like(self, uri: str, cid: str) -> None:
         try:
-            self.__client.like(uri, cid)
+            await self.__client.like(uri, cid)
             print(f"Liked: {uri}")
         except Exception as e:
             print(f"Error liking post: {e}")

@@ -1,62 +1,66 @@
 import os
 import sys
-import schedule
-import time
+import asyncio
+import webserver
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'src')))
+from message_queue import MessageQueue
 from src.firehoseClient import FirehoseClient
-from src.processing import ProcessPostText
 from src.bot import BlueskyBot
+from src.processing import ProcessPost
 from src.utils.stopWords import stop_words
 from dotenv import load_dotenv
-from datetime import datetime
-from functools import partial
-import webserver
 
-def trending_topics(firehose: FirehoseClient, bot: BlueskyBot, limit=1000):
-    firehose.reset()
-    firehose.start(limit)
+async def process_queue(queue: MessageQueue, process_post: ProcessPost):
+    while True:
+        print("Next processing in 1 minute...")
+        await asyncio.sleep(60)
 
-    result = firehose.get_result()
+        messages = queue.get_messages()
+        print(f"Processing {len(messages)} messages.")
 
-    trends = result.most_common(5)
-    print(result.most_common(40))
+        for message in messages:
+            process_post.process_post_text(message)
+        
+        print("Processed!")
+        result = process_post.get_result()
 
-    date = datetime.now()
-    message = f"""
-    🔥 Trending Topics 🔥
-    📅 {date.strftime("%d/%m/%Y")} 🕝 {date.strftime("%H:%M")}
+        print(f"Result: {result.most_common(5)}")
 
-    1. {trends[0][0]} #{trends[0][1]}
-    2. {trends[1][0]} #{trends[1][1]}
-    3. {trends[2][0]} #{trends[2][1]}
-    4. {trends[3][0]} #{trends[3][1]}
-    5. {trends[4][0]} #{trends[4][1]}
-    """
+        process_post.reset()
 
-    bot.post(message)
-
-def main():
+async def main():
     load_dotenv()
     SOCIAL_HANDLER = os.getenv("SOCIAL_HANDLER")
     SOCIAL_PASSWORD = os.getenv("SOCIAL_PASSWORD")
     bot = BlueskyBot()
 
-    if not bot.connect(SOCIAL_HANDLER, SOCIAL_PASSWORD):
+    print("Connecting...")
+    if not await bot.connect(SOCIAL_HANDLER, SOCIAL_PASSWORD):
         print("Failed to connect to Bluesky. Exiting.")
         return
+
+    message_queue = MessageQueue(max_size=1000)
+    firehose = FirehoseClient(message_queue=message_queue)
+
+    print("Starting FirehoseClient...")
+    firehose_task = asyncio.create_task(firehose.start())
+    print("FirehoseClient has been started.")
     
-    firehose = FirehoseClient(processing=ProcessPostText(stop_words))
+    print("Starting queue processing...")
+    queue_task = asyncio.create_task(process_queue(message_queue, process_post=ProcessPost(stop_words=stop_words)))
+    print("Processing has been started.")
 
-    print("Starting...")
+    async def shutdown():
+        print("Shutting down...")
+        await firehose.stop()
+        firehose_task.cancel()
+        queue_task.cancel()
 
-    # Agendando para rodar a cada 14 minutos
-    schedule.every(14).minutes.do(partial(trending_topics, firehose, bot, limit=500000))
-
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+    try:
+        await firehose_task
+        await queue_task
+    except (asyncio.CancelledError, KeyboardInterrupt):
+        await shutdown()
 
 if __name__ == "__main__":
-    webserver.keep_alive()
-    
-    main()
+    asyncio.run(main())

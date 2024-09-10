@@ -1,7 +1,7 @@
 import re
 from collections import Counter
 
-class ProcessPostText:
+class ProcessPost:
     def __init__(self, stop_words: set[str]) -> None:
         self.__stop_words = stop_words
         self.__word_counter = Counter()
@@ -29,7 +29,7 @@ class ProcessPostText:
     def get_result(self) -> Counter:
         return self.__word_counter
     
-    def reset_counter(self) -> None:
+    def reset(self) -> None:
         """
         Reseta o contador de palavras para começar o processamento do zero.
         """
