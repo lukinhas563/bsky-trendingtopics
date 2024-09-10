@@ -11,4 +11,4 @@ class Logger:
         DATE = DATETIME.strftime("%d/%m/%Y")
         TIME = DATETIME.strftime("%H:%M")
 
-        print(f"({self.__colors["green"]}{DATE}{self.__colors["reset"]}) [{self.__colors["yellow"]}{TIME}{self.__colors["reset"]}] {message}")
+        print(f"({self.__colors['green']}{DATE}{self.__colors['reset']}) [{self.__colors['yellow']}{TIME}{self.__colors['reset']}] {message}")
