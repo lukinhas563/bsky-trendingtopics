@@ -36,11 +36,12 @@ async def process_queue(queue: MessageQueue, process_post: ProcessPost, bot: Blu
         logger.print(f"Result: {result.most_common(10)}")
 
         post_message = f""" TRENDING TOPICS
-         1. {trend[0][0].capitalize()} #{trend[0][1]}
-         2. {trend[1][0].capitalize()} #{trend[1][1]}
-         3. {trend[2][0].capitalize()} #{trend[2][1]}
-         4. {trend[3][0].capitalize()} #{trend[3][1]}
-         5. {trend[4][0].capitalize()} #{trend[4][1]}
+
+    1. {trend[0][0].capitalize()} #{trend[0][1]}
+    2. {trend[1][0].capitalize()} #{trend[1][1]}
+    3. {trend[2][0].capitalize()} #{trend[2][1]}
+    4. {trend[3][0].capitalize()} #{trend[3][1]}
+    5. {trend[4][0].capitalize()} #{trend[4][1]}
          """
         
         try:
