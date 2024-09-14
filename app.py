@@ -20,7 +20,7 @@ async def process_queue(queue: MessageQueue, process_post: ProcessPost, bot: Blu
         time_str = f"{process_interval / 3600:.1f} hours"
 
     while True:
-        logger.print(f"Next processing in {time_str}...")
+        logger.printWarning(f"Next processing in {time_str}...")
         await asyncio.sleep(process_interval)
 
         messages = queue.get_messages()
@@ -29,7 +29,7 @@ async def process_queue(queue: MessageQueue, process_post: ProcessPost, bot: Blu
         for message in messages:
             process_post.process_post_text(message)
         
-        logger.print("Processed!")
+        logger.printSuccess("Processed!")
 
         result = process_post.get_result()
         trend: List[Tuple[str, int]] = result.most_common(5)
@@ -46,9 +46,9 @@ async def process_queue(queue: MessageQueue, process_post: ProcessPost, bot: Blu
         
         try:
             post = await bot.post(post_message)
-            logger.print(f"Posted: {post.uri} {post_message}")
+            logger.printSuccess(f"Posted: {post.uri} {post_message}")
         except Exception as e:
-            logger.print(f"Error: {e}")
+            logger.printError(f"Error: {e}")
             break
         finally:
             process_post.reset()
@@ -84,7 +84,7 @@ async def main():
     
     logger.print("Connecting...")
     if not await bot.connect(SOCIAL_HANDLER, SOCIAL_PASSWORD):
-        logger.print("Failed to connect to Bluesky. Exiting.")
+        logger.printError("Failed to connect to Bluesky. Exiting.")
         return
 
     
@@ -92,19 +92,19 @@ async def main():
     message_queue = MessageQueue(max_size=int(QUEUE_MAX_SIZE))
     firehose = FirehoseClient(message_queue=message_queue)
     firehose_task = asyncio.create_task(firehose.start())
-    logger.print("FirehoseClient has been started.")
+    logger.printSuccess("FirehoseClient has been started.")
     
     logger.print("Starting queue processing...")
     process_post = ProcessPost(stop_words=stop_words)  
     queue_task = asyncio.create_task(process_queue(message_queue, process_post=process_post, bot=bot, logger=logger, process_interval=int(PROCESS_INTERVAL)))
-    logger.print("Processing has been started.")
+    logger.printSuccess("Processing has been started.")
 
     async def shutdown():
         logger.print("Shutting down...")
         try:
             await firehose.stop()
         except Exception as e:
-            logger.print(f"Error stopping Firehose: {e}")
+            logger.printError(f"Error stopping Firehose: {e}")
         
         firehose_task.cancel()
         queue_task.cancel()
